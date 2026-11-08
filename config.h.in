@@ -1,0 +1,2 @@
+#define FiniteStateMachine_VERSION_MAJOR @FiniteStateMachine_VERSION_MAJOR@
+#define FiniteStateMachine_VERSION_MINOR @FiniteStateMachine_VERSION_MINOR@
