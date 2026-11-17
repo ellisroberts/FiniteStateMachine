@@ -45,12 +45,16 @@ For example, in the MSYS2 MINGW64 environment:
 pacman -S mingw-w64-x86_64-cppunit mingw-w64-x86_64-pkgconf
 ```
 
-From the project root, configure with CMake's default generator, build, and run
-the tests. To choose a specific installed generator, add an option such as
-`-G "MinGW Makefiles"` to the configure command.
+From the project root, configure a fresh build directory, build the test
+executable, then run CTest from that build directory. Testing is enabled
+explicitly. `Debug` selects the configuration for multi-configuration
+generators and is ignored by single-configuration generators. To choose a
+specific installed generator, add an option such as `-G "MinGW Makefiles"` to
+the configure command.
 
 ```sh
-cmake -S . -B build
-cmake --build build
-ctest --test-dir build --output-on-failure
+cmake -S . -B build-ctest -DBUILD_TESTING=ON
+cmake --build build-ctest --config Debug
+cd build-ctest
+ctest -C Debug --output-on-failure
 ```
