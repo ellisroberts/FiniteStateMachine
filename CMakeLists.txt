@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 project(StateMachineProject VERSION 1.2.0 LANGUAGES CXX)
 
+include(CTest)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -20,3 +22,4 @@ set(SOURCES
 add_executable(StateMachineTests src/TestRunner.cpp ${SOURCES})
 target_include_directories(StateMachineTests PRIVATE src ${CPPUNIT_INCLUDE_DIRS})
 target_link_libraries(StateMachineTests PRIVATE ${CPPUNIT_LIBRARIES})
+add_test(NAME StateMachineTests COMMAND StateMachineTests)
