@@ -12,6 +12,7 @@ set(SOURCES
     src/Init.cpp
     src/Exponent.cpp
     src/Invalid.cpp
+    src/templates.cpp
 
 )
 

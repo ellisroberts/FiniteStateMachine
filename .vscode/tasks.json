@@ -1,0 +1,64 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: Configure",
+            "type": "process",
+            "command": "C:\\msys64\\mingw64\\bin\\cmake.exe",
+            "args": [
+                "-S",
+                "${workspaceFolder}",
+                "-B",
+                "${workspaceFolder}\\build-mingw64",
+                "-G",
+                "MinGW Makefiles",
+                "-DCMAKE_CXX_COMPILER=C:\\msys64\\mingw64\\bin\\g++.exe",
+                "-DCMAKE_MAKE_PROGRAM=C:\\msys64\\mingw64\\bin\\mingw32-make.exe",
+                "-DPKG_CONFIG_EXECUTABLE=C:\\msys64\\mingw64\\bin\\pkg-config.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:\\msys64\\mingw64\\bin;C:\\msys64\\usr\\bin;${env:PATH}"
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: Build",
+            "type": "process",
+            "command": "C:\\msys64\\mingw64\\bin\\cmake.exe",
+            "args": [
+                "--build",
+                "${workspaceFolder}\\build-mingw64"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:\\msys64\\mingw64\\bin;C:\\msys64\\usr\\bin;${env:PATH}"
+                }
+            },
+            "dependsOn": "CMake: Configure",
+            "dependsOrder": "sequence",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: Run Tests",
+            "type": "process",
+            "command": "${workspaceFolder}\\build-mingw64\\StateMachineTests.exe",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:\\msys64\\mingw64\\bin;C:\\msys64\\usr\\bin;${env:PATH}"
+                }
+            },
+            "dependsOn": "CMake: Build",
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        }
+    ]
+}

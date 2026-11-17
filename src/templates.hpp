@@ -14,8 +14,6 @@
 #include "enums.hpp"
 #include <type_traits>
 
-template <DotType type> class Dot;
-template <Type type> class Number;
 
 template <Type type>
 class Number final : public State
@@ -25,14 +23,7 @@ private:
     Number() = default;
 
 public:
-    static std::shared_ptr<State> GetInstance()
-    {
-        if (!m_Instance)
-        {
-            m_Instance = std::shared_ptr<Number<type>>(new Number<type>());
-        }
-        return m_Instance;
-    }
+    static std::shared_ptr<State> GetInstance();
     std::shared_ptr<State> Transition(std::string const& Arg, char input) override;
 
 };
@@ -45,29 +36,8 @@ private:
     Dot() = default;
 
 public:
-    static std::shared_ptr<State> GetInstance()
-    {
-        if (!m_Instance)
-        {
-            m_Instance = std::shared_ptr<Dot<type>>(new Dot<type>());
-        }
-        return m_Instance;
-    }
-    std::shared_ptr<State> Transition(std::string const& Arg, char input) override
-    {
-        if (Utilities::NumString.find(input) != std::string::npos)
-        {
-            return Number<Type::Fraction>::GetInstance();
-        }
-        if constexpr(type == DotType::Regular)
-		{
-			if ((input == 'e')||(input == 'E'))
-			{
-			    return Exponent::GetInstance();
-			}
-		}
-        return Invalid::GetInstance();
-    }
+    static std::shared_ptr<State> GetInstance();
+    std::shared_ptr<State> Transition(std::string const& Arg, char input) override;
 };
 
 template <SignType type>
@@ -78,67 +48,18 @@ private:
     PlusMinus() = default;
 
 public:
-    static std::shared_ptr<State> GetInstance()
-    {
-        if (!m_Instance)
-        {
-            m_Instance = std::shared_ptr<PlusMinus<type>>(new PlusMinus<type>());
-        }
-        return m_Instance;
-    }
-    std::shared_ptr<State> Transition(std::string const& Arg, char input) override
-    {
-        if (Utilities::NumString.find(input) != std::string::npos)
-        {
-        	if constexpr (type == SignType::Regular)
-                return Number<Type::Regular>::GetInstance();
-        	else
-                return Number<Type::Exponential>::GetInstance();
-        }
-        if constexpr (type == SignType::Regular)
-		{
-			if (input == '.')
-			{
-				return Dot<DotType::Init>::GetInstance();
-			}
-		}
-        return Invalid::GetInstance();
-    }
+    static std::shared_ptr<State> GetInstance();
+    std::shared_ptr<State> Transition(std::string const& Arg, char input) override;
 };
 
-template <Type type>
-std::shared_ptr<State> Number<type>::Transition(std::string const& Arg, char input)
-{
-    if (Utilities::NumString.find(input) != std::string::npos)
-    {
-        if constexpr(type == Type::Regular)
-        {
-            return Number<Type::Regular>::GetInstance();
-        }
-        if constexpr(type == Type::Exponential)
-        {
-		    return Number<Type::Exponential>::GetInstance();
-        }
-        if constexpr(type == Type::Fraction)
-        {
-            return Number<Type::Fraction>::GetInstance();
-        }
-    }
+extern template class Number<Type::Regular>;
+extern template class Number<Type::Exponential>;
+extern template class Number<Type::Fraction>;
 
-    if constexpr(type == Type::Regular)
-    {
-            if (input == '.')
-                return Dot<DotType::Regular>::GetInstance();
-    }
-    if constexpr(type != Type::Exponential)
-    {
-        if ((input == 'e')||(input == 'E'))
-            return Exponent::GetInstance();
-    }
-    return Invalid::GetInstance();
-}
+extern template class Dot<DotType::Regular>;
+extern template class Dot<DotType::Init>;
 
-
-
+extern template class PlusMinus<SignType::Regular>;
+extern template class PlusMinus<SignType::Exponential>;
 
 #endif /* TEMPLATES_HPP_ */
