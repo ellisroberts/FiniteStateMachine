@@ -52,6 +52,9 @@ generators and is ignored by single-configuration generators. To choose a
 specific installed generator, add an option such as `-G "MinGW Makefiles"` to
 the configure command.
 
+GitHub Actions also builds and runs the unit tests on pushes and pull requests
+with Ninja, Unix Makefiles, and MinGW Makefiles.
+
 ```sh
 cmake -S . -B build-ctest -DBUILD_TESTING=ON
 cmake --build build-ctest --config Debug
